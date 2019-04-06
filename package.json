@@ -1,0 +1,25 @@
+{
+  "name": "youvote",
+  "version": "0.0.1",
+  "author": {
+    "name": "Rusu Marin"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "demux": "^4.0.0",
+    "demux-eos": "^4.0.0",
+    "demux-postgres": "^4.0.0",
+    "eosio-mongodb-queries": "^0.9.0",
+    "eosjs": "^20.0.0-beta3",
+    "express": "^4.16.4",
+    "massive": "^5.7.7"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
