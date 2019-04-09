@@ -14,10 +14,12 @@ const {
 const httpEndpoint = 'http://127.0.0.1:8888'
 
 const medicalContractABI = {
-  contract: 'medical4',
+  contract: 'medical5',
   actions: {
     upsertpat: 'upsertpat',
-    rmpatient: 'rmpatient'
+    rmpatient: 'rmpatient',
+    upsertdoc: 'upsertdoc',
+    rmdoctor: 'rmdoctor'
   }
 }
 
@@ -25,7 +27,7 @@ const medicalContract = {
   ...medicalContractABI,
   privateKey: '5KieJAkEhGZ146xdaReiNQqrp4rNVnQvp332gSQE2419T5mMc11',
   authorization: {
-    actor: 'medical4',
+    actor: 'medical5',
     permission: 'active'
   }
 }
@@ -112,6 +114,14 @@ const createDoctorAccount = async accountInfo => {
           accounts: [],
           waits: []
         }
+      }
+    }, {
+      account: medicalContract.contract,
+      name: medicalContract.actions.upsertdoc,
+      authorization: [medicalContract.authorization],
+      data: {
+        doctor: accountInfo.name,
+        pubenckey: accountInfo.encryptionKey
       }
     }]
   }, {
