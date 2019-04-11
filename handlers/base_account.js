@@ -10,25 +10,8 @@ const createAccountErrResp = e => {
   return resp
 }
 
-const isBodyFormatValid = (req, res) => {
-  if (!!!req.body.accountInfo || !!!req.body.userInfo) {
-    res.status(400).send({
-      message: 'Invalid body format'
-    })
-    return false
-  }
-  return true
-}
-
 const tryCreateAccount = async (createAccTransactionCb, req, res) => {
   let isSuccess = false
-
-  if (!!!isBodyFormatValid(req, res)) {
-    res.status(400).send({
-      message: 'Invalid body format'
-    })
-    return isSuccess
-  }
 
   try {
     let transactionReceipt = await createAccTransactionCb(req.body.accountInfo)
