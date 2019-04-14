@@ -11,16 +11,6 @@ const {
   medical_db
 } = require('../database/index')
 
-const isBodyFormatValid = (req, res) => {
-  if (!!!req.body.accountInfo || !!!req.body.userInfo) {
-    res.status(400).send({
-      message: 'Invalid body format'
-    })
-    return false
-  }
-  return true
-}
-
 const _validatePatientFields = (_expected, actual) => {
   const error_msg = {
     validated: false,
@@ -76,7 +66,7 @@ const validatePatientIdentificationData = async (data, res) => {
   return true
 }
 
-const isAlreadyRegistered = async (ssn, res) => {
+const isPatientAlreadyRegistered = async (ssn, res) => {
   const patient = await medical_db.Patient.tryGetPatientBySSN(ssn)
   if (patient) {
     res.status(400).send({
@@ -87,10 +77,10 @@ const isAlreadyRegistered = async (ssn, res) => {
   return false
 }
 
-const tryAddNewPatientToMedicalDB = async (patient, res) => {
+const tryAddNewPatientToMedicalDB = async (patient, account, res) => {
   const new_patient = await medical_db.Patient.tryCreate({
     ssn: patient.ssn,
-    account: 'temporaryacc',
+    account: account,
     surname: patient.surname,
     name: patient.name,
     birthday: patient.birthday
@@ -129,6 +119,5 @@ module.exports.trySetPatientAccount = trySetPatientAccount
 module.exports.tryRollbackPatientAddingToDB = tryRollbackPatientAddingToDB
 module.exports.tryAddNewPatientToMedicalDB = tryAddNewPatientToMedicalDB
 module.exports.tryCreatePatientAccount = tryCreatePatientAccount
-module.exports.isAlreadyRegistered = isAlreadyRegistered
+module.exports.isPatientAlreadyRegistered = isPatientAlreadyRegistered
 module.exports.validatePatientIdentificationData = validatePatientIdentificationData
-module.exports.isBodyFormatValid = isBodyFormatValid

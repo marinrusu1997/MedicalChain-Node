@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const { identification_db } = require('./identification')
+const { startIdentificationSync } = require('./identification')
 
 const sequelize = new Sequelize(
   'medical',
@@ -18,9 +18,11 @@ const sequelize = new Sequelize(
 )
 
 const PatientModel = require('./models/patient-model')
+const DoctorModel = require('./models/doctor-model')
 
 const models = {
-  Patient: PatientModel.init(sequelize, Sequelize)
+  Patient: PatientModel.init(sequelize, Sequelize),
+  Doctor: DoctorModel.init(sequelize, Sequelize)
 }
 
 const medical_db = {
@@ -29,7 +31,7 @@ const medical_db = {
 }
 
 const startSyncWithIdentificationSequelize = () => {
-  return identification_db.sequelize.sync()
+  return startIdentificationSync()
 }
 
 const startSyncWithMedicalSequelize = () => {

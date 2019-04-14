@@ -10,6 +10,16 @@ const createAccountErrResp = e => {
   return resp
 }
 
+const isBodyFormatValid = (req, res) => {
+  if (!!!req.body.accountInfo || !!!req.body.userInfo) {
+    res.status(400).send({
+      message: 'Invalid body format'
+    })
+    return false
+  }
+  return true
+}
+
 const tryCreateAccount = async (createAccTransactionCb, req, res) => {
   let isSuccess = false
 
@@ -46,3 +56,4 @@ const tryCreateAccount = async (createAccTransactionCb, req, res) => {
 }
 
 module.exports.tryCreateAccount = tryCreateAccount
+module.exports.isBodyFormatValid = isBodyFormatValid

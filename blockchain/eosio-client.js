@@ -20,6 +20,12 @@ const medicalContractABI = {
     rmpatient: 'rmpatient',
     upsertdoc: 'upsertdoc',
     rmdoctor: 'rmdoctor'
+  },
+  tables: {
+    rights: { name: 'rights', limit: 1 },
+    specialities: { name: 'specialities', limit: 1 },
+    patients: { name: 'patients', limit: 1 },
+    permissions: { name: 'permissions', limit: 10 }
   }
 }
 
@@ -82,9 +88,9 @@ const createPatientAccount = async accountInfo => {
       }
     }]
   }, {
-    blocksBehind: 3,
-    expireSeconds: 30,
-  })
+      blocksBehind: 3,
+      expireSeconds: 30,
+    })
 }
 
 const createDoctorAccount = async accountInfo => {
@@ -121,15 +127,44 @@ const createDoctorAccount = async accountInfo => {
       authorization: [medicalContract.authorization],
       data: {
         doctor: accountInfo.name,
+        specialtyid: accountInfo.specialtyid,
         pubenckey: accountInfo.encryptionKey
       }
     }]
   }, {
-    blocksBehind: 3,
-    expireSeconds: 30,
+      blocksBehind: 3,
+      expireSeconds: 30,
+    })
+}
+
+const _table = async (name, scope, limit) => {
+  return await rpc.get_table_rows({
+    code: medicalContract.contract,
+    scope: scope,
+    table: name,
+    limit: limit || 10
   })
+}
+
+const _specilities = async () => {
+  const { name, limit } = medicalContract.tables.specialities
+  return await _table(name, medicalContract.contract, limit)
+}
+
+const getSpecialtiesTableFromBchain = async () => {
+  try {
+    const specialities = await _specilities()
+    const specialitiesMap = new Map()
+    specialities.rows[0].mapping.forEach(specialty => {
+      specialitiesMap.set(specialty.key, specialty.value)
+    })
+    return Promise.resolve(specialitiesMap)
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 module.exports.medicalContractABI = medicalContractABI
 module.exports.createPatientAccount = createPatientAccount
 module.exports.createDoctorAccount = createDoctorAccount
+module.exports.getSpecialtiesTableFromBchain = getSpecialtiesTableFromBchain

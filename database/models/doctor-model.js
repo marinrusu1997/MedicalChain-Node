@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize')
 
-class PatientModel extends Sequelize.Model {
+class DoctorModel extends Sequelize.Model {
    static init(sequelize, DataTypes) {
       return super.init(
          {
-            ssn: {
+            uic: {
                type: DataTypes.STRING,
                allowNull: false,
                unique: true,
@@ -12,7 +12,7 @@ class PatientModel extends Sequelize.Model {
                validate: {
                   notEmpty: true,
                   isNumeric: true,
-                  len: [13, 13]
+                  len: [10, 10]
                }
             },
             account: {
@@ -40,33 +40,26 @@ class PatientModel extends Sequelize.Model {
                   isAlpha: true,
                   notEmpty: true
                }
-            },
-            birthday: {
-               type: DataTypes.DATEONLY,
-               allowNull: false,
-               validate: {
-                  isDate: true
-               }
             }
          },
          {
-            modelName: 'patient',
+            modelName: 'doctor',
             timestamps: false,
             sequelize
          }
       )
    }
 
-   static async tryGetPatientBySSN(ssn) {
+   static async tryGetDoctorByUIC(uic) {
       try {
-         return await this.findByPk(ssn)
+         return await this.findByPk(uic)
       } catch (e) {
          console.error(e)
          return null
       }
    }
 
-   static async tryGetPatientByAccount(account) {
+   static async tryGetDoctorByAccount(account) {
       try {
          return await this.findOne({
             where: { account: account }
@@ -77,9 +70,9 @@ class PatientModel extends Sequelize.Model {
       }
    }
 
-   static async tryGetPatientsByFullName(full_name) {
+   static async tryGetDoctorByFullName(full_name) {
       try {
-         return await this.findAll({
+         return await this.findOne({
             where: {
                surname: full_name.surname,
                name: full_name.name
@@ -91,20 +84,20 @@ class PatientModel extends Sequelize.Model {
       }
    }
 
-   static async tryCreate(patient) {
+   static async tryCreate(doctor) {
       try {
-         return await this.create(patient)
+         return await this.create(doctor)
       } catch (e) {
          console.error(e)
          return null
       }
    }
 
-   static async tryRemove(ssn) {
+   static async tryRemove(uic) {
       try {
          return await this.destroy({
             where: {
-               ssn: ssn
+               uic: uic
             }
          })
       } catch (e) {
@@ -113,14 +106,14 @@ class PatientModel extends Sequelize.Model {
       }
    }
 
-   static async tryUpdateAccountField(account, ssn) {
+   static async tryUpdateAccountField(account, uic) {
       try {
          return await this.update(
             {
                account: account
             },
             {
-               where: { ssn: ssn }
+               where: { uic: uic }
             }
          )
       } catch (e) {
@@ -130,4 +123,4 @@ class PatientModel extends Sequelize.Model {
    }
 }
 
-module.exports = PatientModel
+module.exports = DoctorModel

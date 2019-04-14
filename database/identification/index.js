@@ -15,22 +15,34 @@ const sequelize = new Sequelize(
     },
     define: {
       timestamps: false
-    } 
+    }
   }
 )
 
 const CitizenModel = require('./models/citizen-model')
 const DoctorModel = require('./models/doctor-model')
+const SpecialtyModel = require('./models/specialty-model')
 
 const models = {
   Citizen: CitizenModel.init(sequelize, Sequelize),
-  Doctor: DoctorModel.init(sequelize, Sequelize)
+  Doctor: DoctorModel.init(sequelize, Sequelize),
+  Specialty: SpecialtyModel.init(sequelize, Sequelize)
 }
- 
+
+SpecialtyModel.hasMany(DoctorModel)
+
 const identification_db = {
   ...models,
   sequelize
 }
 
+const startIdentificationSync = () => {
+  return identification_db.sequelize
+    .sync()
+    .then(() => {
+      return identification_db.Specialty.prepopulate()
+    })
+}
 
 module.exports.identification_db = identification_db
+module.exports.startIdentificationSync = startIdentificationSync

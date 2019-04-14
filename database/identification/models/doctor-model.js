@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize') 
+const Sequelize = require('sequelize')
 
 class DoctorModel extends Sequelize.Model {
    static init(sequelize, DataTypes) {
@@ -69,6 +69,15 @@ class DoctorModel extends Sequelize.Model {
          }
       );
    }
+
+   static async tryGetDoctorByUIC(uic) {
+      try {
+        return await this.findByPk(uic)
+      } catch (e) {
+        console.error(e)
+        return null
+      }
+    }
 }
 
 module.exports = DoctorModel
