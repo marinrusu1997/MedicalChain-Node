@@ -1,7 +1,6 @@
 const {
   Api,
-  JsonRpc,
-  RpcError
+  JsonRpc
 } = require('eosjs')
 const JsSignatureProvider = require('eosjs/dist/eosjs-jssig').default
 const fetch = require('node-fetch')
@@ -14,7 +13,7 @@ const {
 const httpEndpoint = 'http://127.0.0.1:8888'
 
 const medicalContractABI = {
-  contract: 'medical5',
+  contract: 'medical',
   actions: {
     upsertpat: 'upsertpat',
     rmpatient: 'rmpatient',
@@ -33,7 +32,7 @@ const medicalContract = {
   ...medicalContractABI,
   privateKey: '5KieJAkEhGZ146xdaReiNQqrp4rNVnQvp332gSQE2419T5mMc11',
   authorization: {
-    actor: 'medical5',
+    actor: 'medical',
     permission: 'active'
   }
 }

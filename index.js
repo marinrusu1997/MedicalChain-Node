@@ -2,7 +2,6 @@ const {
   startBlockchainMonitoring
 } = require("./blockchain/demux-watcher")
 const {
-  medical_db,
   startSyncWithMedicalSequelize,
   startSyncWithIdentificationSequelize
 } = require('./database')
@@ -18,15 +17,21 @@ app.use(cors())
 app.use(bodyParser.json())
 /* Configuration */
 
+/* Routes */
 app.use(routes)
+/* Routes */
 
+/* Identification Database Syncronization */
 startSyncWithIdentificationSequelize()
   .then(() => {
+    /* Medical Database Syncronization */
     startSyncWithMedicalSequelize()
       .then(() => {
+        /* Start listen for HTTP requests */
         app.listen(port, () => {
           console.log('Server started on port ' + port + '...')
-          startBlockchainMonitoring()
+          /* Start Blockchain Monitoring */
+          //startBlockchainMonitoring()
         })
       })
       .catch(e => {

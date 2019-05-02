@@ -81,8 +81,8 @@ const tryAddNewPatientToMedicalDB = async (patient, account, res) => {
   const new_patient = await medical_db.Patient.tryCreate({
     ssn: patient.ssn,
     account: account,
-    surname: patient.surname,
-    name: patient.name,
+    surname: patient.surname.toUpperCase(),
+    name: patient.name.toUpperCase(),
     birthday: patient.birthday
   })
   if (!!!new_patient) {

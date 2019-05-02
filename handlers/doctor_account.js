@@ -83,8 +83,8 @@ const tryAddNewDoctorToMedicalDB = async (doctor, account, res) => {
   const new_doctor = await medical_db.Doctor.tryCreate({
     uic: doctor.unique_identification_code,
     account: account,
-    surname: doctor.surname,
-    name: doctor.name
+    surname: doctor.surname.toUpperCase(),
+    name: doctor.name.toUpperCase()
   })
   if (!!!new_doctor) {
     res.status(500).send({

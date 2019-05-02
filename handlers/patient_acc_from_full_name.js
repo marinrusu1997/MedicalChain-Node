@@ -32,7 +32,7 @@ const loadPatientsByFullName = async (full_name, res) => {
       })
       return null
    }
-   
+
    const patientMappingArr = []
    for (const patient of patients) {
       patientMappingArr.push({
