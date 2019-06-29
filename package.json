@@ -17,12 +17,15 @@
     "massive": "^5.7.7",
     "pg": "^7.9.0",
     "pg-hstore": "^2.3.2",
+    "scatterjs-core": "^2.7.18",
+    "scatterjs-plugin-eosjs2": "^1.5.0",
     "sequelize": "^5.3.0"
   },
   "scripts": {
     "start": "node index.js"
   },
   "devDependencies": {
+    "@babel/runtime": "^7.4.5",
     "nodemon": "^1.18.10"
   }
 }

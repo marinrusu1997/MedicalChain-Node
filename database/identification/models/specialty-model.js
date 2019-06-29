@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const { getSpecialtiesTableFromBchain } = require('../../../blockchain/eosio-client')
+const { eosio_client } = require('../../../blockchain/eosio-client.js')
 
 class SpecialtyModel extends Sequelize.Model {
    static init(sequelize, DataTypes) {
@@ -34,7 +34,7 @@ class SpecialtyModel extends Sequelize.Model {
       let specialtyModelsInserted = []
       try {
          if (await this.count() === 0) {
-            const specialitiesMap = await getSpecialtiesTableFromBchain()
+            const specialitiesMap = await eosio_client.getSpecialtiesTableFromBchain()
             const specialties = []
             specialitiesMap.forEach((specialty, id) => {
                specialties.push({

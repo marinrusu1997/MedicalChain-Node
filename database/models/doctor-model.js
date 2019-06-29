@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
 class DoctorModel extends Sequelize.Model {
    static init(sequelize, DataTypes) {
@@ -77,6 +78,27 @@ class DoctorModel extends Sequelize.Model {
                surname: full_name.surname,
                name: full_name.name
             }
+         })
+      } catch (e) {
+         console.error(e)
+         return null
+      }
+   }
+
+   static async tryGetDoctorsMatchingFullName(full_name) {
+      try {
+         const where = {
+            surname: {
+               [Op.like]: `${full_name.surname}%`
+            }
+         }
+         if (full_name.name) {
+            where.name = {
+               [Op.like]: `${full_name.name}%`
+            }
+         }
+         return this.findAll({
+            where: where
          })
       } catch (e) {
          console.error(e)

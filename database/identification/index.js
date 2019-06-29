@@ -15,7 +15,8 @@ const sequelize = new Sequelize(
     },
     define: {
       timestamps: false
-    }
+    },
+    logging: false
   }
 )
 
@@ -29,7 +30,8 @@ const models = {
   Specialty: SpecialtyModel.init(sequelize, Sequelize)
 }
 
-SpecialtyModel.hasMany(DoctorModel)
+//SpecialtyModel.hasMany(DoctorModel) // Will ad specialtyId to Doctor model
+DoctorModel.belongsTo(SpecialtyModel) // Will also add specialtyId to Doctor model
 
 const identification_db = {
   ...models,

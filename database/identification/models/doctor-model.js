@@ -1,4 +1,6 @@
 const Sequelize = require('sequelize')
+const Op = Sequelize.Op
+const SpecialtyModel = require('./specialty-model')
 
 class DoctorModel extends Sequelize.Model {
    static init(sequelize, DataTypes) {
@@ -72,12 +74,31 @@ class DoctorModel extends Sequelize.Model {
 
    static async tryGetDoctorByUIC(uic) {
       try {
-        return await this.findByPk(uic)
+         return await this.findByPk(uic)
       } catch (e) {
-        console.error(e)
-        return null
+         console.error(e)
+         return null
       }
-    }
+   }
+
+   static async tryGetDoctorsInfoMatchingUICs(uic_arr) {
+      try {
+         return this.findAll({
+            where: {
+               uic: {
+                  [Op.in]: uic_arr
+               }
+            },
+            include: [{
+               model: SpecialtyModel,
+               required: true
+            }]
+         })
+      } catch (e) {
+         console.error(e)
+         return null
+      }
+   }
 }
 
 module.exports = DoctorModel

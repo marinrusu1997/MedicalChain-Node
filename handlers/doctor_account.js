@@ -1,6 +1,6 @@
 const {
-  createDoctorAccount
-} = require('../blockchain/eosio-client')
+  eosio_client
+} = require('../blockchain/eosio-client.js')
 const {
   tryCreateAccount
 } = require('./base_account')
@@ -103,7 +103,7 @@ const tryRollbackDoctorAddingToDB = async uic => {
 }
 
 const tryCreateDoctorAccount = async (req, resp) => {
-  return tryCreateAccount(createDoctorAccount, req, resp)
+  return tryCreateAccount(async accountInfo => await eosio_client.createDoctorAccount(accountInfo), req, resp)
 }
 
 module.exports.isDoctorAlreadyRegistered = isDoctorAlreadyRegistered;

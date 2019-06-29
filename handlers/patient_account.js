@@ -1,6 +1,6 @@
 const {
-  createPatientAccount
-} = require("../blockchain/eosio-client")
+  eosio_client
+} = require("../blockchain/eosio-client.js")
 const {
   tryCreateAccount
 } = require('./base_account')
@@ -102,7 +102,7 @@ const tryRollbackPatientAddingToDB = async ssn => {
 }
 
 const tryCreatePatientAccount = async (req, resp) => {
-  return tryCreateAccount(createPatientAccount, req, resp)
+  return tryCreateAccount(async accountInfo => await eosio_client.createPatientAccount(accountInfo), req, resp)
 }
 
 const trySetPatientAccount = async (account, ssn, res) => {
